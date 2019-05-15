@@ -4,7 +4,7 @@
     <h1>{{ category.name }}</h1>
 
         {% for article in articles %}
-            <h2>{{ loop.index }} / {{ article.title | capitalize }}</h2>
+            <h2>{{ article.id }} / {{ article.title | capitalize }}</h2>
             <p>{{ article.content }}</p>
         {% endfor %}
 {% endblock %}
