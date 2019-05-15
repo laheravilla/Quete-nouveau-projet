@@ -4,13 +4,15 @@
 namespace App\Controller;
 
 
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class DefaultController extends AbstractController
 {
     /**
-     * @Route("/app_index", name="blog_default")
+     * Display Welcome message
+     *
+     * @Route("/", name="app_index")
      */
     public function index()
     {

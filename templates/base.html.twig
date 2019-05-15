@@ -2,11 +2,15 @@
 <html>
     <head>
         <meta charset="UTF-8">
+        <link rel="stylesheet" href="https://bootswatch.com/4/materia/bootstrap.min.css">
         <title>{% block title %}Welcome!{% endblock %}</title>
         {% block stylesheets %}{% endblock %}
     </head>
     <body>
+    <main class="container">
         {% block body %}{% endblock %}
+    </main>
+
         {% block javascripts %}{% endblock %}
     </body>
 </html>

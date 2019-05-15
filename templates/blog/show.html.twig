@@ -1,1 +1,19 @@
-<h1>{{ title }}</h1>
+{% extends 'base.html.twig' %}
+
+{% block tile %}{{ slug }}{% endblock %}
+
+{% block stylesheets %}{% endblock %}
+
+{% block body %}
+
+<article>
+    <h1>Real article's title: {{ article.title }}</h1>
+    <h2>Category: {{ article.category.name }}</h2>
+    <p>{{ article.content }}</p>
+</article>
+
+<a href=""{{ path('blog_index') }}>
+    Back to Homepage.
+</a>
+
+{% endblock %}
