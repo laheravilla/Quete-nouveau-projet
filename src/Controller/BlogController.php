@@ -71,7 +71,7 @@ class BlogController extends AbstractController
     /**
      * Display 3 articles by category
      *
-     * @param string $categoryName
+     * @param string $category
      *
      * @Route("/blog/category/{category}",
      *     defaults={"category" = "Javascript"},
@@ -91,6 +91,10 @@ class BlogController extends AbstractController
 
         $reposArticles = $this->getDoctrine()->getRepository(Article::class);
         $articles = $reposArticles->findBy(['category' => $category], ['id' => 'DESC'], 3);
+
+        if (!$articles) {
+            throw $this->createNotFoundException("No articles found.");
+        }
 
         return $this->render('blog/category.html.twig', [
             'category' => $category,
