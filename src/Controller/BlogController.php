@@ -4,8 +4,8 @@
 namespace App\Controller;
 
 use App\Entity\Article;
-use App\Entity\Category;
 use App\Repository\ArticleRepository;
+use App\Repository\CategoryRepository;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -13,11 +13,15 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class BlogController extends AbstractController
 {
     /**
+     * @param ArticleRepository $repos
+     *
      * Show all row from articles's entity
      *
      * @Route("/blog", name="blog_index")
+     *
+     * @return Response
      */
-    public function index(ArticleRepository $repos)
+    public function index(ArticleRepository $repos): Response
     {
         $articles = $repos->findAll();
 
@@ -68,38 +72,63 @@ class BlogController extends AbstractController
         );
     }
 
+//    /**
+//     * Display 3 articles by category
+//     *
+//     * @param string $category
+//     *
+//     * @Route("/blog/category/{category}",
+//     *     defaults={"category" = "Javascript"},
+//     *     name = "show_category",
+//     *     methods = {"GET"},)
+//     *
+//     * @return Response
+//     */
+//    public function showByCategory(string $category): Response
+//    {
+//        $reposCategory = $this->getDoctrine()->getRepository(Category::class);
+//        $category = $reposCategory->findOneBy(['name' => ucfirst($category)]);
+//
+//        if (!$category) {
+//            throw $this->createNotFoundException("No category found.");
+//        }
+//
+//        $reposArticles = $this->getDoctrine()->getRepository(Article::class);
+//        $articles = $reposArticles->findBy(['category' => $category], ['id' => 'DESC'], 3);
+//
+//        if (!$articles) {
+//            throw $this->createNotFoundException("No articles found.");
+//        }
+//
+//        return $this->render('blog/category.html.twig', [
+//            'category' => $category,
+//                'articles' => $articles,
+//            ]
+//        );
+//    }
+
     /**
      * Display 3 articles by category
      *
-     * @param string $category
+     * @param CategoryRepository $categoryRepo, string $category
      *
      * @Route("/blog/category/{category}",
-     *     defaults={"category" = "Javascript"},
      *     name = "show_category",
      *     methods = {"GET"},)
      *
      * @return Response
      */
-    public function showByCategory(string $category): Response
+    public function showByCategory(CategoryRepository $categoryRepo, string $category): Response
     {
-        $reposCategory = $this->getDoctrine()->getRepository(Category::class);
-        $category = $reposCategory->findOneBy(['name' => ucfirst($category)]);
-
-        if (!$category) {
-            throw $this->createNotFoundException("No category found.");
-        }
-
-        $reposArticles = $this->getDoctrine()->getRepository(Article::class);
-        $articles = $reposArticles->findBy(['category' => $category], ['id' => 'DESC'], 3);
-
-        if (!$articles) {
-            throw $this->createNotFoundException("No articles found.");
-        }
+        $category = $categoryRepo->findOneBy(['name' => ucfirst($category)], ['id' => 'DESC']);
+        $articles = $category->getArticles();
 
         return $this->render('blog/category.html.twig', [
-            'category' => $category,
+                'category' => $category,
                 'articles' => $articles,
             ]
         );
     }
+
+
 }
