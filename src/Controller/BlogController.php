@@ -4,8 +4,8 @@
 namespace App\Controller;
 
 use App\Entity\Article;
+use App\Entity\Category;
 use App\Repository\ArticleRepository;
-use App\Repository\CategoryRepository;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -108,24 +108,19 @@ class BlogController extends AbstractController
 //    }
 
     /**
+     * @param Category $category, CategoryRepository $categoryRepo
+     *
      * Display 3 articles by category
      *
-     * @param CategoryRepository $categoryRepo, string $category
-     *
-     * @Route("/blog/category/{category}",
-     *     name = "show_category",
-     *     methods = {"GET"},)
+     * @Route("/blog/category/{name}", name = "show_category", methods = {"GET"})
      *
      * @return Response
      */
-    public function showByCategory(CategoryRepository $categoryRepo, string $category): Response
+    public function showByCategory(Category $category): Response
     {
-        $category = $categoryRepo->findOneBy(['name' => ucfirst($category)], ['id' => 'DESC']);
-        $articles = $category->getArticles();
-
         return $this->render('blog/category.html.twig', [
-                'category' => $category,
-                'articles' => $articles,
+                'category' =>  $category,
+                'articles' => $category->getArticles(),
             ]
         );
     }
