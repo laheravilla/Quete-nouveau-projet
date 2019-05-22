@@ -30,8 +30,47 @@ class BlogController extends AbstractController
             throw $this->createNotFoundException("No article found in article's table.");
         }
 
-        return $this->render('blog/index.html.twig', ['articles' => $articles]);
+        return $this->render('blog/index.html.twig', [
+            'articles' => $articles,
+            ]
+        );
     }
+
+//    /**
+//     * Display one article by slug
+//     *
+//     * @param string $slug The slugger
+//     *
+//     * @Route(
+//     *     "/blog/{slug}",
+//     *     defaults={"slug" = null},
+//     *     name = "blog_show",
+//     *     methods = {"GET"},
+//     *     requirements = {"slug" = "([a-z0-9]|-)*"})
+//     *
+//     * @return Response
+//     */
+//    public function show(?string $slug): Response
+//    {
+//        if (!$slug) {
+//            throw $this
+//                ->createNotFoundException("No slug has been sent to find an article's table");
+//        }
+//        $slug = preg_replace(
+//            '/-/',
+//            ' ', ucwords(trim(strip_tags($slug)), '-')
+//        );
+//        $reposArticles = $this->getDoctrine()->getRepository(Article::class);
+//        $article = $reposArticles->findOneBy(['title' => mb_strtolower($slug)]);
+//        if (!$article) {
+//            throw $this->createNotFoundException("No article with '.$slug.' title found in article's table");
+//        }
+//        return $this->render('blog/show.html.twig', [
+//                'article' => $article,
+//                'slug' => $slug,
+//            ]
+//        );
+//    }
 
     /**
      * Display one article by slug
@@ -51,62 +90,23 @@ class BlogController extends AbstractController
     {
         if (!$slug) {
             throw $this
-            ->createNotFoundException("No slug has been sent to find an article's table");
+                ->createNotFoundException("No slug has been sent to find an article's table");
         }
-
         $slug = preg_replace(
             '/-/',
             ' ', ucwords(trim(strip_tags($slug)), '-')
         );
-
         $reposArticles = $this->getDoctrine()->getRepository(Article::class);
         $article = $reposArticles->findOneBy(['title' => mb_strtolower($slug)]);
-
         if (!$article) {
             throw $this->createNotFoundException("No article with '.$slug.' title found in article's table");
         }
-
         return $this->render('blog/show.html.twig', [
-            'article' => $article,
+                'article' => $article,
                 'slug' => $slug,
             ]
         );
     }
-
-//    /**
-//     * Display 3 articles by category
-//     *
-//     * @param string $category
-//     *
-//     * @Route("/blog/category/{category}",
-//     *     defaults={"category" = "Javascript"},
-//     *     name = "show_category",
-//     *     methods = {"GET"},)
-//     *
-//     * @return Response
-//     */
-//    public function showByCategory(string $category): Response
-//    {
-//        $reposCategory = $this->getDoctrine()->getRepository(Category::class);
-//        $category = $reposCategory->findOneBy(['name' => ucfirst($category)]);
-//
-//        if (!$category) {
-//            throw $this->createNotFoundException("No category found.");
-//        }
-//
-//        $reposArticles = $this->getDoctrine()->getRepository(Article::class);
-//        $articles = $reposArticles->findBy(['category' => $category], ['id' => 'DESC'], 3);
-//
-//        if (!$articles) {
-//            throw $this->createNotFoundException("No articles found.");
-//        }
-//
-//        return $this->render('blog/category.html.twig', [
-//            'category' => $category,
-//                'articles' => $articles,
-//            ]
-//        );
-//    }
 
     /**
      * @param Category $category, CategoryRepository $categoryRepo
