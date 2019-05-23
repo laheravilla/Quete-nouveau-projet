@@ -16,7 +16,7 @@ class DefaultController extends AbstractController
      */
     public function index()
     {
-        return $this->render('blog/default.html.twig', ['greeting' => 'Bienvenue sur mon blog',]);
+        return $this->render('blog/default.html.twig', ['greeting' => 'Welcome to my blog',]);
     }
 
 }

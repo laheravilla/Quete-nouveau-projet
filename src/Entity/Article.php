@@ -44,6 +44,19 @@ class Article
         $this->tags = new ArrayCollection();
     }
 
+    public function addTags(Tag $tag)
+    {
+        if ($this->tags->contains($tag)) {
+            return;
+        }
+        $this->tags[] = $tag;
+    }
+
+    public function removeTags(Tag $tag)
+    {
+        $this->tags->removeElement($tag);
+    }
+
     public function getId(): ?int
     {
         return $this->id;

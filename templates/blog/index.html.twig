@@ -3,24 +3,36 @@
 {% block title %}All articles{% endblock %}
 
 {% block body %}
+    <h1 class="mt-5">All articles from article's table:</h1>
 
-    <h1>All articles from article's table:</h1>
-
-{#    {{ form_start(form) }}#}
-{#        {{ form_row(form.searchField) }}#}
-{#        <button type="submit" name="btnSearch" class="btn btn-primary d-inline-block">{{ button_label|default('Go') }}</button>#}
-{#    {{ form_end(form) }}#}
-
-    {% for article in articles %}
-        <article>
-            <h2>{{ loop.index }} / {{ article.title }} - Category: {{ article.category.name }}</h2>
-            <p>{{ article.content }}</p>
-            <a class="btn btn-outline-primary" href="{{ path('blog_show', { 'slug': "javascript-vs-php" }) }}">Read more... </a>
-        </article>
+    <table class="table mt-5">
+        <thead>
+        <tr>
+            <th>#</th>
+            <th>Title</th>
+            <th>Category</th>
+            <th>Content</th>
+            <th>More...</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for article in articles %}
+            <tr>
+                <td>{{ loop.index }}</td>
+                <td>{{ article.title }}</td>
+                <td>{{ article.category.name }}</td>
+                <td>{{ article.content }}</td>
+                <td>
+                    <a class="btn btn-outline-primary" href="{{ path('blog_show', { 'slug': article.title }) }}">Read more... </a>
+                </td>
+            </tr>
         {% else %}
-            Any article found
-    {% endfor %}
+            <tr>
+                <td colspan="3">Any article found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
 
     <a href="{{ path('app_index') }}">Back to Homepage</a>
-
 {% endblock %}

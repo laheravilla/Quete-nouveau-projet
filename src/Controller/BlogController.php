@@ -15,11 +15,8 @@ class BlogController extends AbstractController
 {
     /**
      * @param ArticleRepository $repos
-     *
      * Show all row from articles's entity
-     *
      * @Route("/blog", name="blog_index")
-     *
      * @return Response
      */
     public function index(ArticleRepository $repos): Response
@@ -36,66 +33,27 @@ class BlogController extends AbstractController
         );
     }
 
-//    /**
-//     * Display one article by slug
-//     *
-//     * @param string $slug The slugger
-//     *
-//     * @Route(
-//     *     "/blog/{slug}",
-//     *     defaults={"slug" = null},
-//     *     name = "blog_show",
-//     *     methods = {"GET"},
-//     *     requirements = {"slug" = "([a-z0-9]|-)*"})
-//     *
-//     * @return Response
-//     */
-//    public function show(?string $slug): Response
-//    {
-//        if (!$slug) {
-//            throw $this
-//                ->createNotFoundException("No slug has been sent to find an article's table");
-//        }
-//        $slug = preg_replace(
-//            '/-/',
-//            ' ', ucwords(trim(strip_tags($slug)), '-')
-//        );
-//        $reposArticles = $this->getDoctrine()->getRepository(Article::class);
-//        $article = $reposArticles->findOneBy(['title' => mb_strtolower($slug)]);
-//        if (!$article) {
-//            throw $this->createNotFoundException("No article with '.$slug.' title found in article's table");
-//        }
-//        return $this->render('blog/show.html.twig', [
-//                'article' => $article,
-//                'slug' => $slug,
-//            ]
-//        );
-//    }
-
     /**
      * Display one article by slug
-     *
      * @param string $slug The slugger
-     *
      * @Route(
      *     "/blog/{slug}",
      *     defaults={"slug" = null},
      *     name = "blog_show",
      *     methods = {"GET"},
-     *     requirements = {"slug" = "([a-z0-9]|-)*"})
-     *
+     *     requirements = {"title" = "(\w|-|\s|\?|\.|:|!)+"})
      * @return Response
      */
     public function show(?string $slug): Response
     {
-        if (!$slug) {
-            throw $this
-                ->createNotFoundException("No slug has been sent to find an article's table");
-        }
-        $slug = preg_replace(
-            '/-/',
-            ' ', ucwords(trim(strip_tags($slug)), '-')
-        );
+//        if (!$slug) {
+//            throw $this
+//                ->createNotFoundException("No slug has been sent to find an article's table");
+//        }
+//        $slug = preg_replace(
+//            '/ /',
+//            '-', ucwords(trim(strip_tags($slug)), '-')
+//        );
         $reposArticles = $this->getDoctrine()->getRepository(Article::class);
         $article = $reposArticles->findOneBy(['title' => mb_strtolower($slug)]);
         if (!$article) {
@@ -110,9 +68,7 @@ class BlogController extends AbstractController
 
     /**
      * @param Category $category, CategoryRepository $categoryRepo
-     *
      * @Route("/blog/category/{name}", name = "show_category", methods = {"GET"})
-     *
      * @return Response
      */
     public function showByCategory(Category $category): Response
@@ -126,9 +82,7 @@ class BlogController extends AbstractController
 
     /**
      * @param Tag $tag
-     *
      * @Route("/blog/tag/{name}", name = "show_tag", methods = {"GET"})
-     *
      * @return Response
      */
     public function showByTag(Tag $tag): Response
