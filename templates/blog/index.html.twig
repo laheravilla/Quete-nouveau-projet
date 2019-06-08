@@ -23,7 +23,7 @@
                 <td>{{ article.category.name }}</td>
                 <td>{{ article.content }}</td>
                 <td>
-                    <a class="btn btn-outline-primary" href="{{ path('blog_show', { 'slug': article.title }) }}">Read more... </a>
+                    <a class="btn btn-outline-primary" href="{{ path('blog_show', { 'title': article.title }) }}">Read more... </a>
                 </td>
             </tr>
         {% else %}

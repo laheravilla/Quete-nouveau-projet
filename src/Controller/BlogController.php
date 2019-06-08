@@ -3,7 +3,6 @@
 
 namespace App\Controller;
 
-use App\Entity\Article;
 use App\Entity\Category;
 use App\Entity\Tag;
 use App\Repository\ArticleRepository;
@@ -34,34 +33,34 @@ class BlogController extends AbstractController
     }
 
     /**
-     * Display one article by slug
-     * @param string $slug The slugger
+     * @param $title
+     * @param ArticleRepository $articleRepository
      * @Route(
-     *     "/blog/{slug}",
-     *     defaults={"slug" = null},
+     *     "/blog/{title}",
      *     name = "blog_show",
-     *     methods = {"GET"},
-     *     requirements = {"title" = "(\w|-|\s|\?|\.|:|!)+"})
+     *     methods = {"GET"})
      * @return Response
      */
-    public function show(?string $slug): Response
+    public function show(?string $title, ArticleRepository $articleRepository): Response
     {
-//        if (!$slug) {
-//            throw $this
-//                ->createNotFoundException("No slug has been sent to find an article's table");
-//        }
-//        $slug = preg_replace(
-//            '/ /',
-//            '-', ucwords(trim(strip_tags($slug)), '-')
-//        );
-        $reposArticles = $this->getDoctrine()->getRepository(Article::class);
-        $article = $reposArticles->findOneBy(['title' => mb_strtolower($slug)]);
-        if (!$article) {
-            throw $this->createNotFoundException("No article with '.$slug.' title found in article's table");
+        if (!$title) {
+            throw $this
+                ->createNotFoundException('No slug has been sent to find an article in article\'s table.');
         }
-        return $this->render('blog/show.html.twig', [
+
+        $article = $articleRepository->findOneBy(['title' => mb_strtolower($title)]);
+
+        if (!$article) {
+            throw $this->createNotFoundException(
+                'No article with '.$title.' title, found in article\'s table.'
+            );
+        }
+
+        return $this->render(
+            'blog/show.html.twig',
+            [
                 'article' => $article,
-                'slug' => $slug,
+                'title' => $title,
             ]
         );
     }
