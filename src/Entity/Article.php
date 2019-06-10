@@ -111,6 +111,13 @@ class Article
         return $this->tags;
     }
 
+    public function setTag(?Tag $tag): self
+    {
+        $this->tags = $tag;
+
+        return $this;
+    }
+
         public function addTag(Tag $tag): self
     {
         if (!$this->tags->contains($tag)) {

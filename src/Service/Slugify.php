@@ -27,6 +27,6 @@ class Slugify
             '/([^A-Za-z0-9-àéêèïôœç])+/' => '-',
         );
 
-        return trim(preg_replace(array_keys($utf8), array_values($utf8), $input), '-');
+        return strtolower(trim(preg_replace(array_keys($utf8), array_values($utf8), $input), '-'));
     }
 }

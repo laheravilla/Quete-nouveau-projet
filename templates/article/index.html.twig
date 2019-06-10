@@ -4,12 +4,13 @@
 
 {% block body %}
     <h1 class="mt-5">Article index</h1>
-
     <table class="table mt-5 mb-3">
         <thead>
             <tr>
-                <th>Id</th>
-                <th>Title</th>
+                <th>#</th>
+                <th>Slug</th>
+                <th>Category</th>
+                <th>Tags</th>
                 <th>Content</th>
                 <th>actions</th>
             </tr>
@@ -17,8 +18,16 @@
         <tbody>
         {% for article in articles %}
             <tr>
-                <td>{{ article.id }}</td>
+                <td>{{ loop.index }}</td>
                 <td>{{ article.title }}</td>
+                <td>{{ article.category.name }}</td>
+                <td>
+                    {% for tag in article.tags %}
+                        {{ tag.name }}
+                    {% else %}
+                        No tags...
+                    {% endfor %}
+                </td>
                 <td>{{ article.content }}</td>
                 <td>
                     <a href="{{ path('article_show', {'id': article.id}) }}">show</a>
