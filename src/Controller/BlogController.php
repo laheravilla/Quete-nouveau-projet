@@ -20,12 +20,11 @@ class BlogController extends AbstractController
      */
     public function index(ArticleRepository $repos): Response
     {
-        $articles = $repos->findAll();
+        $articles = $repos->findAllWithCategoriesAndTags();
 
         if (!$articles) {
             throw $this->createNotFoundException("No article found in article's table.");
         }
-
         return $this->render('blog/index.html.twig', [
             'articles' => $articles,
             ]
