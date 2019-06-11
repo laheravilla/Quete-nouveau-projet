@@ -55,6 +55,7 @@ class TagController extends AbstractController
     {
         return $this->render('tag/show.html.twig', [
             'tag' => $tag,
+            'articles' => $tag->getArticles(),
         ]);
     }
 

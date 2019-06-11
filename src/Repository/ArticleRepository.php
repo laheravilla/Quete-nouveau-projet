@@ -32,9 +32,22 @@ class ArticleRepository extends ServiceEntityRepository
 
     public function findAllWithCategoriesAndTags()
     {
-        $entityManager = $this->getEntityManager();
-        $query = $entityManager->createQuery('SELECT a, c, t FROM App\Entity\Article a INNER JOIN a.category c INNER JOIN a.tags t');
+//        $entityManager = $this->getEntityManager();
+//        $query = $entityManager->createQuery(
+//            'SELECT a, c, t
+//            FROM App\Entity\Article a
+//            LEFT JOIN a.category c
+//            LEFT JOIN a.tags t
+//        );
+//
+//        return $query->execute();
 
-        return $query->execute();
+        $qb = $this->createQueryBuilder('a')
+            ->leftJoin('a.category', 'c' )
+            ->leftJoin('a.tags', 't' )
+            ->addSelect('c', 'a', 't')
+            ->getQuery();
+
+        return $qb->execute();
     }
 }

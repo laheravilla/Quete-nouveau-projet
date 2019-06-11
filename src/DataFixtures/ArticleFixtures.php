@@ -13,15 +13,18 @@ class ArticleFixtures extends Fixture implements DependentFixtureInterface
     {
         return [CategoryFixtures::class];
     }
+
     public function load(ObjectManager $manager)
     {
         $faker = Faker\Factory::create('en_US');
-        for ($i = 1; $i <= 20; $i++) {
+
+        for ($i = 1; $i <= 10; $i++) {
             $tag = new Tag();
             $tags = TagFixtures::TAGS;
             $rand_keys = array_rand($tags, 2);
             $tag->setName($tags[$rand_keys[0]]);
             $manager->persist($tag);
+
             $article = new Article();
             $title = new Slugify();
             $article->setTitle($title->generate($faker->sentence(6)));
@@ -30,6 +33,7 @@ class ArticleFixtures extends Fixture implements DependentFixtureInterface
             $article->addTag($tag);
             $manager->persist($article);
         }
+
         $manager->flush();
     }
 }

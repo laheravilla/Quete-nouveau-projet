@@ -17,6 +17,7 @@ class BlogController extends AbstractController
     public function index(ArticleRepository $repos): Response
     {
         $articles = $repos->findAllWithCategoriesAndTags();
+
         if (!$articles) {
             throw $this->createNotFoundException("No article found in article's table.");
         }
