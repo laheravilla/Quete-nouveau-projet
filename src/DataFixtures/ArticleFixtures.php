@@ -33,7 +33,6 @@ class ArticleFixtures extends Fixture implements DependentFixtureInterface
             $article->addTag($tag);
             $manager->persist($article);
         }
-
         $manager->flush();
     }
 }
