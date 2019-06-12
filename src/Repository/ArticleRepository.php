@@ -20,7 +20,7 @@ class ArticleRepository extends ServiceEntityRepository
         parent::__construct($registry, Article::class);
     }
 
-    public function findAllWithCategories()
+    public function findAllWithCategoriesAndTags()
     {
 //        $entityManager = $this->getEntityManager();
 //        $query = $entityManager->createQuery(
