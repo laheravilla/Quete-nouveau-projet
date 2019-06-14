@@ -1,5 +1,6 @@
 <?php
 namespace App\Controller;
+
 use App\Entity\Article;
 use App\Form\ArticleType;
 use App\Repository\ArticleRepository;
@@ -27,20 +28,36 @@ class ArticleController extends AbstractController
     /**
      * @param Request $request
      * @param Slugify $slugify
+     * @param \Swift_Mailer $mailer
      * @Route("/new", name="article_new", methods={"GET","POST"})
      * @return Response
      */
-    public function new(Request $request, Slugify $slugify): Response
+    public function new(Request $request, Slugify $slugify, \Swift_Mailer $mailer): Response
     {
         $article = new Article();
         $form = $this->createForm(ArticleType::class, $article);
         $form->handleRequest($request);
+
         if ($form->isSubmitted() && $form->isValid()) {
             $title = $slugify->generate($article->getTitle());
             $article->setTitle($title);
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($article);
             $entityManager->flush();
+
+            $message = (new \Swift_Message('A new article has been published!'))
+                ->setFrom($this->getParameter('mailer_from'))
+                ->setTo($this->getParameter('mailer_to'))
+                ->setBody(
+                    $this->render('article/email/notification.html.twig', [
+                        'article' => $article
+                    ]),
+                    'text/html'
+                );
+
+            $mailer->send($message);
+
+
             return $this->redirectToRoute('article_index');
         }
         return $this->render('article/new.html.twig', [
