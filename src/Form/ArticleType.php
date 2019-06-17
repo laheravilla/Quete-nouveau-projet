@@ -16,9 +16,9 @@ class ArticleType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $title = new Slugify();
+//        $title = new Slugify();
         $builder
-            ->add($title->generate('title'))
+            ->add('title')
             ->add('content')
             ->add('category', EntityType::class, [
                 'class' => Category::class,

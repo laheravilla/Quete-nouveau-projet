@@ -26,8 +26,9 @@ class ArticleFixtures extends Fixture implements DependentFixtureInterface
             $manager->persist($tag);
 
             $article = new Article();
-            $title = new Slugify();
-            $article->setTitle($title->generate($faker->sentence(6)));
+            $slug = new Slugify();
+            $article->setTitle($faker->sentence(6));
+            $article->setSlug($slug->generate($article->getTitle()));
             $article->setContent(mb_strtolower($faker->text));
             $article->setCategory($this->getReference('category_' . rand(0, 6)));
             $article->addTag($tag);

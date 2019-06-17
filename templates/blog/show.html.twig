@@ -1,13 +1,14 @@
 {% extends 'base.html.twig' %}
 
-{% block tile %}{{ slug }}{% endblock %}
+{% block title %}{{ title }}{% endblock %}
 
 {% block stylesheets %}{% endblock %}
 
 {% block body %}
 
     <article>
-        <h1>Slug: {{ article.title }}</h1>
+        <h1>Title: {{ article.title }}</h1>
+        <h2>Slug: {{ article.slug }}</h2>
         <h2>Category: {{ article.category.name }}</h2>
         <p>{{ article.content }}</p>
     </article>

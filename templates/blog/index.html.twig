@@ -8,6 +8,7 @@
         <thead>
         <tr>
             <th>#</th>
+            <th>Title</th>
             <th>Slug</th>
             <th>Category</th>
             <th>Tags</th>
@@ -20,6 +21,7 @@
             <tr>
                 <td>{{ loop.index }}</td>
                 <td>{{ article.title }}</td>
+                <td>{{ article.slug }}</td>
                 <td>{{ article.category.name }}</td>
                 <td>
                         {% for tag in article.tags %}
