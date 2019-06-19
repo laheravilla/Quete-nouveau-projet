@@ -3,6 +3,7 @@ namespace App\Controller;
 use App\Entity\Category;
 use App\Entity\Tag;
 use App\Repository\ArticleRepository;
+use App\Service\Slugify;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -27,31 +28,32 @@ class BlogController extends AbstractController
         );
     }
     /**
-     * @param $title
+     * @param $slug
+     * @param Slugify $slugify
      * @param ArticleRepository $articleRepository
      * @Route(
-     *     "/blog/{title}",
+     *     "/blog/{slug}",
      *     name = "blog_show",
      *     methods = {"GET"})
      * @return Response
      */
-    public function show(?string $title, ArticleRepository $articleRepository): Response
+    public function show(?string $slug, ArticleRepository $articleRepository, Slugify $slugify): Response
     {
-        if (!$title) {
+        if (!$slug) {
             throw $this
                 ->createNotFoundException('No slug has been sent to find an article in article\'s table.');
         }
-        $article = $articleRepository->findOneBy(['title' => mb_strtolower($title)]);
+        $article = $articleRepository->findOneBy(['slug' => $slugify->generate($slug)]);
         if (!$article) {
             throw $this->createNotFoundException(
-                'No article with '.$title.' title, found in article\'s table.'
+                'No article with '.$slug.' title, found in article\'s table.'
             );
         }
         return $this->render(
             'blog/show.html.twig',
             [
                 'article' => $article,
-                'title' => $title,
+                'slug' => $slug,
             ]
         );
     }

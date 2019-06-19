@@ -9,6 +9,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Security;
+
 /**
  * @Route("/article")
  */
@@ -29,10 +31,11 @@ class ArticleController extends AbstractController
      * @param Request $request
      * @param Slugify $slugify
      * @param \Swift_Mailer $mailer
+     * @param Security $security
      * @Route("/new", name="article_new", methods={"GET","POST"})
      * @return Response
      */
-    public function new(Request $request, Slugify $slugify, \Swift_Mailer $mailer): Response
+    public function new(Request $request, Slugify $slugify, \Swift_Mailer $mailer, Security $security): Response
     {
         $article = new Article();
         $form = $this->createForm(ArticleType::class, $article);
@@ -41,6 +44,14 @@ class ArticleController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $slug = $slugify->generate($article->getTitle());
             $article->setSlug($slug);
+
+            $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
+            if ($security->getUser()) {
+                $author = $security->getUser();
+                $article->setAuthor($author);
+            }
+
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($article);
             $entityManager->flush();

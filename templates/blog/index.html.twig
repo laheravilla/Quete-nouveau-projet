@@ -10,6 +10,7 @@
             <th>#</th>
             <th>Title</th>
             <th>Slug</th>
+            <th>Author</th>
             <th>Category</th>
             <th>Tags</th>
             <th>Content</th>
@@ -22,6 +23,7 @@
                 <td>{{ loop.index }}</td>
                 <td>{{ article.title }}</td>
                 <td>{{ article.slug }}</td>
+                <td>{{ article.author }}</td>
                 <td>{{ article.category.name }}</td>
                 <td>
                         {% for tag in article.tags %}
@@ -32,7 +34,7 @@
                 </td>
                 <td>{{ article.content }}</td>
                 <td>
-                    <a class="btn btn-outline-primary" href="{{ path('blog_show', { 'title': article.title }) }}">Read more... </a>
+                    <a class="btn btn-outline-primary" href="{{ path('blog_show', { 'slug': article.slug }) }}">Read more... </a>
                 </td>
             </tr>
         {% else %}

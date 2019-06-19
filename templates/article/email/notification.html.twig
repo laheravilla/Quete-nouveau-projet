@@ -19,7 +19,10 @@
                         <!-- / Hero subheader -->
                         <table class="container hero-subheader" border="0" cellpadding="0" cellspacing="0" width="620" style="width: 620px;">
                             <tr>
-                                <td class="hero-subheader__title" style="font-size: 43px; font-weight: bold; padding: 80px 0 15px 0;" align="left">{{ article.title }}</td>
+                                <td class="hero-subheader__title" style="font-size: 43px; font-weight: bold; padding: 80px 0 0 0;" align="left">{{ article.title }}</td>
+                            </tr>
+                            <tr>
+                                <td class="hero-subheader__title" style="font-size: 20px; padding: 15px 0 15px 0;" align="left">Author: {{ article.author }}</td>
                             </tr>
 
                             <tr>
@@ -63,7 +66,7 @@
                                                 <table class="container" border="0" cellpadding="0" cellspacing="0">
                                                     <tr>
                                                         <td class="cta-block__button" width="230" align="center" style="width: 200px;">
-                                                            <a href="http://127.0.0.1:8000{{ path('blog_show', {'title': article.title}) }}" style="border: 3px solid #f59697; color: #f59697; text-decoration: none; padding: 15px 45px; text-transform: uppercase; display: block; text-align: center; font-size: 16px;">Read Article</a>
+                                                            <a href="http://127.0.0.1:8000{{ path('blog_show', {'slug': article.slug}) }}" style="border: 3px solid #f59697; color: #f59697; text-decoration: none; padding: 15px 45px; text-transform: uppercase; display: block; text-align: center; font-size: 16px;">Read Article</a>
                                                         </td>
                                                     </tr>
                                                 </table>
