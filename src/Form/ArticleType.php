@@ -23,10 +23,6 @@ class ArticleType extends AbstractType
     {
         $builder
             ->add('title')
-////            ->add(
-////                $builder->create('author', FormType::class, ['by_reference' => false])
-//            ->add('author', EntityType::class, ['class' => User::class, 'by_reference' => false])
-////            )
             ->add('content')
             ->add('category', EntityType::class, [
                 'class' => Category::class,

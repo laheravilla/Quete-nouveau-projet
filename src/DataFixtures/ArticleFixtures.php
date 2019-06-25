@@ -1,5 +1,6 @@
 <?php
 namespace App\DataFixtures;
+
 use App\Entity\Article;
 use App\Entity\Tag;
 use App\Entity\User;
@@ -29,7 +30,7 @@ class ArticleFixtures extends Fixture implements DependentFixtureInterface
             $author = new User();
             $author = User::class;
             $rand_keys = array_rand($author, 2);
-            $author->
+//            $author->
 
 
             $manager->persist($author);

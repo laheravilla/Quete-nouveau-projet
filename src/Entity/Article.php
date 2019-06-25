@@ -5,9 +5,15 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ArticleRepository")
+ * @UniqueEntity(
+ *     fields={"title"},
+ *     message="This title is already in use."
+ * )
  */
 class Article
 {
@@ -19,12 +25,25 @@ class Article
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, unique=true)
+     * @Assert\NotBlank(message="This field is mandatory")
+     * @Assert\Length(
+     *     min = 2,
+     *     max = 255,
+     *     minMessage = "Your title must be at least {{ limit }} characters long",
+     *     maxMessage = "Your title cannot be longer than {{ limit }} characters"
+     * )
      */
     private $title;
 
     /**
      * @ORM\Column(type="text")
+     * @Assert\NotBlank(message="This field is mandatory")
+     * @Assert\Regex(
+     *     pattern="/digital/i",
+     *     match=false,
+     *     message="In French, we rather say numérique"
+     * )
      */
     private $content;
 
