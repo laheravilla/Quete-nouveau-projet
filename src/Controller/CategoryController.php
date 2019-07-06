@@ -45,6 +45,8 @@ class CategoryController extends AbstractController
             $entityManager->persist($category);
             $entityManager->flush();
 
+            $this->addFlash('success', 'Category created! Knowledge is power!');
+
             return $this->redirectToRoute('category_index');
         }
 
@@ -79,6 +81,8 @@ class CategoryController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
 
+            $this->addFlash('warning', 'You have just edited a category!');
+
             return $this->redirectToRoute('category_index', [
                 'id' => $category->getId(),
             ]);
@@ -99,6 +103,8 @@ class CategoryController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($category);
             $entityManager->flush();
+
+            $this->addFlash('danger', 'You have just deleted a category!');
         }
 
         return $this->redirectToRoute('category_index');

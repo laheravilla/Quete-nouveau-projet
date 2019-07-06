@@ -26,14 +26,11 @@ class ArticleFixtures extends Fixture implements DependentFixtureInterface
             $rand_keys = array_rand($tags, 2);
             $tag->setName($tags[$rand_keys[0]]);
             $manager->persist($tag);
-
+/*
             $author = new User();
             $author = User::class;
             $rand_keys = array_rand($author, 2);
-//            $author->
-
-
-            $manager->persist($author);
+            $manager->persist($author);*/
 
             $article = new Article();
             $slug = new Slugify();

@@ -41,6 +41,8 @@ class TagController extends AbstractController
             $entityManager->persist($tag);
             $entityManager->flush();
 
+            $this->addFlash('success', 'Tag created! Knowledge is power!');
+
             return $this->redirectToRoute('tag_index');
         }
 
@@ -72,6 +74,8 @@ class TagController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
 
+            $this->addFlash('warning', 'You have just edited a tag!');
+
             return $this->redirectToRoute('tag_index', [
                 'id' => $tag->getId(),
             ]);
@@ -92,6 +96,8 @@ class TagController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($tag);
             $entityManager->flush();
+
+            $this->addFlash('danger', 'You have just deleted a tag!');
         }
 
         return $this->redirectToRoute('tag_index');

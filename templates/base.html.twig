@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="https://bootswatch.com/4/materia/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.9.0/css/all.min.css"
+          integrity="sha256-UzFD2WYH2U1dQpKDjjZK72VtPeWP50NoJjd26rnAdUI=" crossorigin="anonymous"/>
     <link rel="stylesheet" href="{{ asset('build/app.css') }}">
     {% block stylesheets %} {{ encore_entry_link_tags('app') }} {% endblock %}
     <title>{% block title %}Welcome!{% endblock %}</title>
@@ -69,9 +71,20 @@
         </div>
     </nav>
 
-<main class="container">
-    {% block body %}{% endblock %}
-</main>
+    <main class="container">
+        {% for message in app.flashes('success') %}
+            <div class="alert alert-success"><i style="color:white;" class="far fa-thumbs-up"></i>&nbsp&nbsp&nbsp{{ message }}</div>
+        {% endfor %}
+        {% for message in app.flashes('warning') %}
+            <div class="alert alert-warning"><i style="color:white;" class="far fa-thumbs-up"></i>&nbsp&nbsp&nbsp{{ message }}</div>
+        {% endfor %}
+
+        {% for message in app.flashes('danger') %}
+            <div class="alert alert-danger"><i style="color:white;" class="far fa-thumbs-down"></i>&nbsp&nbsp&nbsp{{ message }}</div>
+        {% endfor %}
+
+        {% block body %}{% endblock %}
+    </main>
 <script src="{{ asset('build/app.js') }}"></script>
 {% block javascripts %} {{ encore_entry_script_tags('app') }} {% endblock %}
 </body>

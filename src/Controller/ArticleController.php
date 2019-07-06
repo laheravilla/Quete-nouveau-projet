@@ -15,12 +15,13 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * @Route("/article")
+ * @IsGranted("IS_AUTHENTICATED_FULLY", message="Not an account yet?")
  */
 class ArticleController extends AbstractController
 {
     /**
      * @param ArticleRepository $articleRepository
-     * @Route("/", name="article_index", methods={"GET"}    )
+     * @Route("/", name="article_index", methods={"GET"})
      * @return Response
      */
     public function index(ArticleRepository $articleRepository): Response
@@ -30,6 +31,7 @@ class ArticleController extends AbstractController
         ]);
     }
     /**
+     * Create a new article
      * @param Request $request
      * @param Slugify $slugify
      * @param \Swift_Mailer $mailer
@@ -57,6 +59,8 @@ class ArticleController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($article);
             $entityManager->flush();
+
+           $this->addFlash('success', 'Article created! Knowledge is power!');
 
             $message = (new \Swift_Message('A new article has been published!'))
                 ->setFrom($this->getParameter('mailer_from'))
@@ -93,12 +97,13 @@ class ArticleController extends AbstractController
      * @param Request $request
      * @param Article $article
      * @param Slugify $slugify
+     * @param Security $security
      * @Route("/{id}/edit", name="article_edit", methods={"GET","POST"})
      * @return Response
      */
     public function edit(Request $request, Article $article, Slugify $slugify, Security $security): Response
     {
-        if ($security->getUser() === $article->getAuthor() && $security->isGranted('ROLE_AUTHOR')) {
+        if ($security->getUser() === $article->getAuthor() && $security->isGranted('ROLE_AUTHOR') || $security->isGranted('ROLE_ADMIN')) {
 
             $form = $this->createForm(ArticleType::class, $article);
             $form->handleRequest($request);
@@ -109,6 +114,9 @@ class ArticleController extends AbstractController
                 $article->setSlug($slug);
 
                 $this->getDoctrine()->getManager()->flush();
+
+                $this->addFlash('warning', 'You have just edited an article!');
+
                 return $this->redirectToRoute('article_index', [
                     'id' => $article->getId(),
                 ]);
@@ -124,17 +132,25 @@ class ArticleController extends AbstractController
     }
 
     /**
-     * @param Request $request, Article $article
+     * @param Request $request
+     * @param Article $article
+     * @param Security $security
      * @Route("/{id}", name="article_delete", methods={"DELETE"})
      * @return Response
      */
-    public function delete(Request $request, Article $article): Response
+    public function delete(Request $request, Article $article, Security $security): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$article->getId(), $request->request->get('_token'))) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->remove($article);
-            $entityManager->flush();
+        if ($security->getUser() === $article->getAuthor() && $security->isGranted('ROLE_AUTHOR') || $security->isGranted('ROLE_ADMIN')) {
+            if ($this->isCsrfTokenValid('delete'.$article->getId(), $request->request->get('_token'))) {
+                $entityManager = $this->getDoctrine()->getManager();
+                $entityManager->remove($article);
+                $entityManager->flush();
+    
+                $this->addFlash('danger', 'You have just deleted an article!');
+            }
+            return $this->redirectToRoute('article_index');
+        } else {
+            $this->denyAccessUnlessGranted('EDIT', $article, 'You are not the author of this article!');
         }
-        return $this->redirectToRoute('article_index');
     }
 }
