@@ -21,8 +21,11 @@
             <li>No tags for this article</li>
         {% endfor %}
     </ul>
+    {% if is_granted('ROLE_AUTHOR') %}
+        <a class="btn btn-outline-primary" href="{{ path('article_edit', { 'id': article.id} ) }}">Éditer</a>
+    {%endif%}
 
-    <a href="{{ path('app_index') }}">
+    <a class="btn btn-outline-primary" href="{{ path('app_index') }}">
         Back to Homepage.
     </a>
 

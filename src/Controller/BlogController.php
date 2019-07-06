@@ -31,10 +31,7 @@ class BlogController extends AbstractController
      * @param $slug
      * @param Slugify $slugify
      * @param ArticleRepository $articleRepository
-     * @Route(
-     *     "/blog/{slug}",
-     *     name = "blog_show",
-     *     methods = {"GET"})
+     * @Route("/blog/{slug}", name = "blog_show", methods = {"GET"})
      * @return Response
      */
     public function show(?string $slug, ArticleRepository $articleRepository, Slugify $slugify): Response
